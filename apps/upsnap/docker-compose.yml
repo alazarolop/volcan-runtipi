@@ -5,7 +5,7 @@ services:
       - '${APP_DATA_DIR}/data:/app/pb_data'
     environment:
       - 'TZ=${TZ}'
-      - 'UPSNAP_HTTP_LISTEN=127.0.0.1:${APP_PORT}'
+      - 'UPSNAP_HTTP_LISTEN=0.0.0.0:${APP_PORT}'
     network_mode: host # host is required for WOL magic packets
     cap_add:
       - NET_RAW # NET_RAW is required for privileged ping and network device scan (nmap)
