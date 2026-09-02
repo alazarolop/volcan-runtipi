@@ -12,6 +12,19 @@ services:
     cap_drop:
       - ALL
     restart: unless-stopped
+    labels:
+      generated: true
+      traefik.enable: true
+      traefik.http.middlewares.upsnap-volcanapps-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.upsnap-volcanapps.loadbalancer.server.port: "${APP_PORT}"
+      traefik.http.routers.upsnap-volcanapps-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.upsnap-volcanapps-insecure.entrypoints: web
+      traefik.http.routers.upsnap-volcanapps-insecure.service: upsnap-volcanapps
+      traefik.http.routers.upsnap-volcanapps-insecure.middlewares: upsnap-volcanapps-web-redirect
+      traefik.http.routers.upsnap-volcanapps.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.upsnap-volcanapps.entrypoints: websecure
+      traefik.http.routers.upsnap-volcanapps.service: upsnap-volcanapps
+      traefik.http.routers.upsnap-volcanapps.tls.certresolver: myresolver
     x-runtipi:
       internal_port: ${APP_PORT}
       is_main: true
