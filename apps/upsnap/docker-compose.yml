@@ -16,7 +16,7 @@ services:
       generated: true
       traefik.enable: true
       traefik.http.middlewares.upsnap-volcanapps-web-redirect.redirectscheme.scheme: https
-      traefik.http.services.upsnap-volcanapps.loadbalancer.server.port: "${APP_PORT}"
+      traefik.http.services.upsnap-volcanapps.loadbalancer.server.url: "http://${INTERNAL_IP}:${APP_PORT}"
       traefik.http.routers.upsnap-volcanapps-insecure.rule: Host(`${APP_DOMAIN}`)
       traefik.http.routers.upsnap-volcanapps-insecure.entrypoints: web
       traefik.http.routers.upsnap-volcanapps-insecure.service: upsnap-volcanapps
