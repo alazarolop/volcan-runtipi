@@ -12,7 +12,7 @@ services:
       - LLDAP_LDAP_BASE_DN=dc=home,dc=arpa
       - LLDAP_LDAP_USER_PASS=${LLDAP_ADMIN_PASS}
     networks:
-      tipi_main_network
+      - tipi_main_network
     ports:
       # For LDAP, not recommended to expose, see Usage section.
       #- "3890:3890"
