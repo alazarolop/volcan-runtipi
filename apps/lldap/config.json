@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schemas.runtipi.io/app-info.json",
+  "name": "LLDAP",
+  "id": "lldap",
+  "available": true,
+  "exposable": true,
+  "port": 17170,
+  "tipi_version": 1,
+  "version": "v0.6.3",
+  "author": "lldap",
+  "categories": [
+    "network",
+    "security"
+  ],
+  "short_desc": "Light LDAP for authentication",
+  "description": "Light LDAP implementation for authentication.",
+  "source": "https://github.com/lldap/lldap",
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ],
+  "created_at": 1789747200,
+  "updated_at": 1789747200,
+  "dynamic_config": true,
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "JWT Secret",
+      "max": 100,
+      "min": 32,
+      "hint": "32+ chars (openssl rand -base64 32)",
+      "required": true,
+      "env_variable": "LLDAP_APP_JWT_SECRET"
+    },
+    {
+      "type": "text",
+      "label": "Key Seed",
+      "max": 100,
+      "min": 32,
+      "hint": "32+ chars (openssl rand -base64 32)",
+      "required": true,
+      "env_variable": "LLDAP_APP_KEY_SEED"
+    },
+    {
+      "type": "text",
+      "label": "User admin password",
+      "max": 20,
+      "min": 4,
+      "hint": "Escape '$' as Pas$$word sets Pas$word",
+      "required": true,
+      "env_variable": "LLDAP_ADMIN_PASS"
+    }
+  ],
+  "min_tipi_version": "4.5.0"
+}

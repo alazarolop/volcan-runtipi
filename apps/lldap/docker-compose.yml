@@ -1,0 +1,44 @@
+services:
+  lldap:
+    image: ghcr.io/lldap/lldap:v0.6.3
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      - UID=1000
+      - GID=1000
+      - TZ=${TZ}
+      - LLDAP_JWT_SECRET=${LLDAP_APP_JWT_SECRET}
+      - LLDAP_KEY_SEED=${LLDAP_APP_KEY_SEED}
+      - LLDAP_LDAP_BASE_DN=dc=home,dc=arpa
+      - LLDAP_LDAP_USER_PASS=${LLDAP_ADMIN_PASS}
+    networks:
+      tipi_main_network
+    ports:
+      # For LDAP, not recommended to expose, see Usage section.
+      #- "3890:3890"
+      - "${INTERNAL_IP:-0.0.0.0}:389:389"
+      # For LDAPS (LDAP Over SSL), enable port if LLDAP_LDAPS_OPTIONS__ENABLED set true, look env below
+      #- "6360:6360"
+      # For the web front-end
+      - ${APP_PORT}:17170
+    labels:
+      generated: true
+      traefik.enable: true
+      traefik.http.middlewares.lldap-volcanapps-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.lldap-volcanapps.loadbalancer.server.port: "17170"
+      traefik.http.routers.lldap-volcanapps-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.lldap-volcanapps-insecure.entrypoints: web
+      traefik.http.routers.lldap-volcanapps-insecure.service: lldap-volcanapps
+      traefik.http.routers.lldap-volcanapps-insecure.middlewares: lldap-volcanapps-web-redirect
+      traefik.http.routers.lldap-volcanapps.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.lldap-volcanapps.entrypoints: websecure
+      traefik.http.routers.lldap-volcanapps.service: lldap-volcanapps
+      traefik.http.routers.lldap-volcanapps.tls.certresolver: myresolver
+    x-runtipi:
+      internal_port: 17170
+      is_main: true
+    restart: unless-stopped
+networks:
+  tipi_main_network:
+    name: runtipi_tipi_main_network
+    external: true
