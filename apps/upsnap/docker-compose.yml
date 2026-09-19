@@ -28,6 +28,5 @@ services:
     x-runtipi:
       internal_port: ${APP_PORT}
       is_main: true
-    restart: unless-stopped
 x-runtipi:
   schema_version: 2
