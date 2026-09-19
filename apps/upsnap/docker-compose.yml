@@ -1,6 +1,6 @@
 services:
   upsnap:
-    image: 'ghcr.io/seriousm4x/upsnap:5'
+    image: 'ghcr.io/seriousm4x/upsnap:5.7.0'
     volumes:
       - '${APP_DATA_DIR}/data:/app/pb_data'
     environment:
@@ -28,5 +28,6 @@ services:
     x-runtipi:
       internal_port: ${APP_PORT}
       is_main: true
+    restart: unless-stopped
 x-runtipi:
   schema_version: 2

@@ -5,11 +5,12 @@
   "available": true,
   "exposable": true,
   "port": 8090,
-  "tipi_version": 1,
-  "version": "v5.4.4",
+  "tipi_version": 2,
+  "version": "v5.7.0",
   "author": "seriousm4x",
   "categories": [
-    "network"
+    "network",
+    "utilities"
   ],
   "short_desc": "Wake-on-LAN",
   "description": "A simple wake on lan web app written with SvelteKit, Go and PocketBase.",
@@ -19,7 +20,7 @@
     "amd64"
   ],
   "created_at": 1786917600000,
-  "updated_at": 1786917600000,
+  "updated_at": 1789745400000,
   "dynamic_config": true,
   "form_fields": [],
   "min_tipi_version": "4.5.0"
