@@ -5,8 +5,8 @@
   "available": true,
   "exposable": true,
   "port": 8090,
-  "tipi_version": 2,
-  "version": "v5.7.0",
+  "tipi_version": 3,
+  "version": "v5.7.1",
   "author": "seriousm4x",
   "categories": [
     "network",
@@ -20,7 +20,7 @@
     "amd64"
   ],
   "created_at": 1786917600000,
-  "updated_at": 1789745400000,
+  "updated_at": 1790073000000,
   "dynamic_config": true,
   "form_fields": [],
   "min_tipi_version": "4.5.0"

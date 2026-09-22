@@ -1,6 +1,6 @@
 services:
   upsnap:
-    image: 'ghcr.io/seriousm4x/upsnap:5.7.0'
+    image: 'ghcr.io/seriousm4x/upsnap:5.7.1'
     volumes:
       - '${APP_DATA_DIR}/data:/app/pb_data'
     environment:
