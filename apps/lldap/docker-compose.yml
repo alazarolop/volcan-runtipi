@@ -15,7 +15,7 @@ services:
       - tipi_main_network
     ports:
       # For LDAP, not recommended to expose, see Usage section.
-      - "${INTERNAL_IP:-0.0.0.0}:3890:3890"
+      - "${NETWORK_INTERFACE:-0.0.0.0}:3890:3890"
     labels:
       generated: true
       traefik.enable: true
