@@ -1,0 +1,36 @@
+services:
+  freshrss:
+    image: ghcr.io/freshrss/freshrss:1.30.0
+    container_name: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${APP_DATA_DIR}/data/freshrss:/config
+    ports:
+      - ${APP_PORT}:80
+    restart: unless-stopped
+    networks:
+      - tipi_main_network
+    labels:
+      traefik.enable: true
+      traefik.http.middlewares.freshrss-volcanapps-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.freshrss-volcanapps.loadbalancer.server.port: 80
+      traefik.http.routers.freshrss-volcanapps-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.freshrss-volcanapps-insecure.entrypoints: web
+      traefik.http.routers.freshrss-volcanapps-insecure.service: freshrss
+      traefik.http.routers.freshrss-volcanapps-insecure.middlewares: freshrss-web-redirect
+      traefik.http.routers.freshrss-volcanapps.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.freshrss-volcanapps.entrypoints: websecure
+      traefik.http.routers.freshrss-volcanapps.service: freshrss
+      traefik.http.routers.freshrss-volcanapps.tls.certresolver: myresolver
+    x-runtipi:
+      internal_port: 80
+      is_main: true
+networks:
+  tipi_main_network:
+    name: runtipi_tipi_main_network
+    external: true
+x-runtipi:
+  schema_version: 2
