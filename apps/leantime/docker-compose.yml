@@ -14,6 +14,9 @@ services:
       - LEAN_DB_USER=leantime
       - LEAN_DB_PASSWORD=tipi
       - LEAN_DB_DATABASE=leantime
+      - LEAN_DB_DEFAULT_CONNECTION=pgsql
+      - LEAN_DB_SCHEMA=public
+      - LEAN_DB_SSLMODE=prefer
 
       - LEAN_SESSION_PASSWORD=${LEAN_SESSION_PASSWORD}
       - LEAN_SESSION_EXPIRATION=604800

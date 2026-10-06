@@ -1,8 +1,6 @@
 
 # Leantime
 
-⭐ If you find Leantime useful, please star us on GitHub! ⭐
-
 Leantime is an open source project management system for non-project managers.
 We combine strategy, planning and execution while making it easy for everyone on the team to use.
 Built with ADHD, dyslexia and autism in mind. 🧠
