@@ -1,0 +1,49 @@
+{
+  "$schema": "../app-info-schema.json",
+  "name": "Leantime",
+  "id": "leantime",
+  "available": true,
+  "exposable": true,
+  "port": 8089,
+  "dynamic_config": true,
+  "tipi_version": 1,
+  "version": "3.10.4",
+  "categories": ["utilities"],
+  "description": "Leantime is an open source project management system for non-project managers.",
+  "short_desc": "An open source project management for non-project managers.",
+  "author": "https://leantime.io/",
+  "source": "https://github.com/Leantime/leantime",
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "Session Password",
+      "max": 100,
+      "min": 32,
+      "hint": "32+ chars (openssl rand -hex 32)",
+      "required": true,
+      "env_variable": "LEAN_SESSION_PASSWORD"
+    },
+    {
+      "type": "text",
+      "label": "Default language",
+      "max": 10,
+      "min": 2,
+      "hint": "en-US, es-ES",
+      "required": true,
+      "env_variable": "LEAN_LANGUAGE"
+    },
+    {
+      "type": "text",
+      "label": "Default timezone",
+      "max": 50,
+      "min": 5,
+      "hint": "Europe/Paris",
+      "required": true,
+      "env_variable": "LEAN_DEFAULT_TIMEZONE"
+    }
+  ],
+  "supported_architectures": ["arm64", "amd64"],
+  "created_at": 1791273600000,
+  "updated_at": 1791273600000,
+  "min_tipi_version": "4.5.0"
+}

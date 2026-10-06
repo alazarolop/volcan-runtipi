@@ -1,0 +1,97 @@
+services:
+  leantime:
+    image: leantime/leantime:3.10.4
+    volumes:
+      - ${APP_DATA_DIR}/data/userfiles:/var/www/html/userfiles
+      - ${APP_DATA_DIR}/data/public_userfiles:/var/www/html/public/userfiles
+      - ${APP_DATA_DIR}/data/plugins:/var/www/html/app/Plugins
+    environment:
+      - LEAN_PORT=8080  
+      - LEAN_APP_URL=${APP_DOMAIN}
+
+      - LEAN_DB_HOST=leantime-db
+      - LEAN_DB_PORT=5432
+      - LEAN_DB_USER=leantime
+      - LEAN_DB_PASSWORD=tipi
+      - LEAN_DB_DATABASE=leantime
+
+      - LEAN_SESSION_PASSWORD=${LEAN_SESSION_PASSWORD}
+      - LEAN_SESSION_EXPIRATION=604800
+      - LEAN_SESSION_SECURE=false
+      - LEAN_SITENAME=Leantime
+      - LEAN_LANGUAGE=${LEAN_LANGUAGE}
+      - LEAN_DEFAULT_TIMEZONE=${LEAN_DEFAULT_TIMEZONE}
+      
+      - LEAN_USE_REDIS=true
+      - LEAN_REDIS_HOST=leantime-redis
+      - LEAN_REDIS_PORT=6379
+    depends_on:
+      leantime-db:
+        condition: service_healthy
+      leantime-redis:
+        condition: service_healthy
+    networks:
+      leantime_volcanapps_network:
+        gw_priority: 0
+      tipi_main_network:
+        gw_priority: 1
+    labels:
+      generated: true
+      traefik.enable: true
+      traefik.docker.network: runtipi_tipi_main_network
+      traefik.http.middlewares.leantime-volcanapps-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.leantime-volcanapps.loadbalancer.server.port: "8080"
+      traefik.http.routers.leantime-volcanapps-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.leantime-volcanapps-insecure.entrypoints: web
+      traefik.http.routers.leantime-volcanapps-insecure.service: leantime-volcanapps
+      traefik.http.routers.leantime-volcanapps-insecure.middlewares: leantime-volcanapps-web-redirect
+      traefik.http.routers.leantime-volcanapps.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.leantime-volcanapps.entrypoints: websecure
+      traefik.http.routers.leantime-volcanapps.service: leantime-volcanapps
+      traefik.http.routers.leantime-volcanapps.tls.certresolver: myresolver
+    restart: unless-stopped
+    x-runtipi:
+      internal_port: 80
+      is_main: true
+  leantime-db:
+    image: postgres:17
+    volumes:
+      - ${APP_DATA_DIR}/data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=leantime
+      - POSTGRES_USER=leantime
+      - POSTGRES_PASSWORD=tipi
+    networks:
+      leantime_volcanapps_network:
+        gw_priority: 0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leantime -d leantime"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+  leantime-redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - ${APP_DATA_DIR}/data/redis:/data
+    networks:
+      - leantime_volcanapps_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  tipi_main_network:
+    name: runtipi_tipi_main_network
+    external: true
+  leantime_volcanapps_network:
+    ipam:
+      config:
+        - subnet: 10.128.20.0/24
+x-runtipi:
+  schema_version: 2
