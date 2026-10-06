@@ -14,9 +14,7 @@ services:
       - LEAN_DB_USER=leantime
       - LEAN_DB_PASSWORD=tipi
       - LEAN_DB_DATABASE=leantime
-      - LEAN_DB_DEFAULT_CONNECTION=pgsql
-      - LEAN_DB_SCHEMA=public
-      - LEAN_DB_SSLMODE=prefer
+      - LEAN_DB_DEFAULT_CONNECTION=mysql
 
       - LEAN_SESSION_PASSWORD=${LEAN_SESSION_PASSWORD}
       - LEAN_SESSION_EXPIRATION=604800
@@ -56,24 +54,21 @@ services:
     x-runtipi:
       internal_port: 8080
       is_main: true
-  leantime-db:
-    image: postgres:17
+  leantime_db:
+    image: mysql:8.4
+    container_name: mysql_leantime
     volumes:
-      - ${APP_DATA_DIR}/data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=leantime
-      - POSTGRES_USER=leantime
-      - POSTGRES_PASSWORD=tipi
-    networks:
-      leantime_volcanapps_network:
-        gw_priority: 0
+      - ${APP_DATA_DIR}/data/db:/var/lib/mysql
     restart: unless-stopped
+    env_file: ./.env                                        # Environment file with settings
+    networks:
+      - leantime-net
+    command: --character-set-server=UTF8MB4 --collation-server=UTF8MB4_unicode_ci
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U leantime -d leantime"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   leantime-redis:
     image: redis:7-alpine
     command: redis-server --appendonly yes
