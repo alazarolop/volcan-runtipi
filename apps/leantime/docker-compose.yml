@@ -60,7 +60,7 @@ services:
       - ${APP_DATA_DIR}/data/db:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - leantime-net
+      - leantime_volcanapps_network
     command: --character-set-server=UTF8MB4 --collation-server=UTF8MB4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
