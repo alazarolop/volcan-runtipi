@@ -19,8 +19,7 @@ services:
       - LEAN_SESSION_EXPIRATION=604800
       - LEAN_SESSION_SECURE=false
       - LEAN_SITENAME=Leantime
-      - LEAN_LANGUAGE=${LEAN_LANGUAGE}
-      - LEAN_DEFAULT_TIMEZONE=${LEAN_DEFAULT_TIMEZONE}
+      - LEAN_DEFAULT_TIMEZONE=${TZ}
       
       - LEAN_USE_REDIS=true
       - LEAN_REDIS_HOST=leantime-redis
