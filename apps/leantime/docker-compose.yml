@@ -68,7 +68,16 @@ services:
       - leantime_volcanapps_network
     command: --character-set-server=UTF8MB4 --collation-server=UTF8MB4_unicode_ci
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect"]
+      test:
+        [
+          "CMD",
+          "mariadb-admin",
+          "ping",
+          "-h",
+          "localhost",
+          "--user=leantime",
+          "--password=tipi"
+        ]
       interval: 30s
       timeout: 10s
       retries: 5
