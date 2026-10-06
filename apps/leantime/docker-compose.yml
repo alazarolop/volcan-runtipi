@@ -24,6 +24,7 @@ services:
       - LEAN_USE_REDIS=true
       - LEAN_REDIS_HOST=leantime-redis
       - LEAN_REDIS_PORT=6379
+      - LEAN_REDIS_SCHEME=tcp
     depends_on:
       leantime-db:
         condition: service_healthy
@@ -49,6 +50,12 @@ services:
       traefik.http.routers.leantime-volcanapps.service: leantime-volcanapps
       traefik.http.routers.leantime-volcanapps.tls.certresolver: myresolver
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/jsonrpc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     x-runtipi:
       internal_port: 80
       is_main: true
