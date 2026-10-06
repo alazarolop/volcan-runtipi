@@ -7,10 +7,10 @@ services:
       - ${APP_DATA_DIR}/data/plugins:/var/www/html/app/Plugins
     environment:
       - LEAN_PORT=8080  
-      - LEAN_APP_URL=${APP_DOMAIN}
+      - LEAN_APP_URL=https://${APP_DOMAIN}
 
       - LEAN_DB_HOST=leantime-db
-      - LEAN_DB_PORT=5432
+      - LEAN_DB_PORT=3306
       - LEAN_DB_USER=leantime
       - LEAN_DB_PASSWORD=tipi
       - LEAN_DB_DATABASE=leantime
@@ -18,7 +18,7 @@ services:
 
       - LEAN_SESSION_PASSWORD=${LEAN_SESSION_PASSWORD}
       - LEAN_SESSION_EXPIRATION=604800
-      - LEAN_SESSION_SECURE=false
+      - LEAN_SESSION_SECURE=true
       - LEAN_SITENAME=Leantime
       - LEAN_DEFAULT_TIMEZONE=${TZ}
       
@@ -54,10 +54,15 @@ services:
     x-runtipi:
       internal_port: 8080
       is_main: true
-  leantime_db:
+  leantime-db:
     image: mysql:8.4
     volumes:
       - ${APP_DATA_DIR}/data/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=tipi
+      - MYSQL_DATABASE=leantime
+      - MYSQL_USER=leantime
+      - MYSQL_PASSWORD=tipi
     restart: unless-stopped
     networks:
       - leantime_volcanapps_network
